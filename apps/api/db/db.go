@@ -15,7 +15,7 @@ func Connect() (*pgxpool.Pool, error) {
 		return nil, fmt.Errorf("DATABASE_URL is not set")
 	}
 
-	pool, err := pgxpool.New(context.Background(), databaseURL)
+	pool, err := pgxpool.New(context.Background(), databaseURL) //pool keeps track of all the connections
 	if err != nil {
 		return nil, err
 	}
