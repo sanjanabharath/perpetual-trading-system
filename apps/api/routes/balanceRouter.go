@@ -9,14 +9,24 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-func GetBalance(pool *pgxpool.Pool) gin.HandlerFunc {
-	return func(c *gin.Context) {
-		userID := c.Param("userId")
+
+type BalanceHandler struct {
+	pool *pgxpool.Pool
+}
+
+func NewBalanceHandler(pool *pgxpool.Pool) *BalanceHandler {
+	return &BalanceHandler{
+		pool: pool,
+	}
+}
+
+func (h *BalanceHandler) GetBalance(c *gin.Context) {
+	userID := c.Param("userId")
 
 		var id string
 		var name string
 
-		err := pool.QueryRow(
+		err := h.pool.QueryRow(
 			context.Background(),
 			"SELECT id, name FROM users WHERE id = $1",
 			userID,
@@ -44,4 +54,3 @@ func GetBalance(pool *pgxpool.Pool) gin.HandlerFunc {
 			},
 		})
 	}
-}
